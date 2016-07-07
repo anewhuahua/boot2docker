@@ -1,5 +1,8 @@
 FROM debian:jessie
 
+
+
+
 RUN apt-get update && apt-get -y install  unzip \
                         xz-utils \
                         curl \
@@ -13,8 +16,8 @@ RUN apt-get update && apt-get -y install  unzip \
                         squashfs-tools \
                         genisoimage \
                         xorriso \
-                        syslinux \
                         isolinux \
+                        syslinux \
                         automake \
                         pkg-config \
                         p7zip-full
@@ -148,8 +151,11 @@ RUN cd $ROOTFS && zcat /tcl_rootfs.gz | cpio -f -i -H newc -d --no-absolute-file
 RUN cd $ROOTFS && ln -s lib lib64
 
 # get generate_cert
-RUN curl -fL -o $ROOTFS/usr/local/bin/generate_cert https://github.com/SvenDowideit/generate_cert/releases/download/0.2/generate_cert-0.2-linux-amd64 && \
-    chmod +x $ROOTFS/usr/local/bin/generate_cert
+COPY generate_cert-0.2-linux-amd64 $ROOTFS/usr/local/bin/generate_cert 
+RUN chmod +x $ROOTFS/usr/local/bin/generate_cert
+    
+#RUN curl -fL -o $ROOTFS/usr/local/bin/generate_cert https://github.com/SvenDowideit/generate_cert/releases/download/0.2/generate_cert-0.2-linux-amd64 && \
+#    chmod +x $ROOTFS/usr/local/bin/generate_cert
 
 # Build VBox guest additions
 ENV VBOX_VERSION 5.0.24
